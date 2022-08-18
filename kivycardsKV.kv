@@ -1,0 +1,217 @@
+#:kivy 2.1.0
+
+#.kv file implementation of FloatLayout
+
+ScreenManagement:
+
+    OpeningScreen:
+
+    BlackJackScreen:
+
+    WarScreen:
+
+<OpeningScreen>:
+    name: "openscreen"
+    
+    FloatLayout: 
+        size: root.width, root.height
+        
+        canvas:
+            Color: 
+                rgba: 1, 1, 1, .8
+            Rectangle:
+                source: 'michal-parzuchowski-oT-XbATcoTQ-unsplash.jpg'
+                pos: self.pos
+                size: self.size
+
+        Button:
+            text: "- Welcome -"
+            font_size: 50
+            bold: True
+            #background_normal: ''
+            #background_disabled_normal: self.background_normal
+            background_color: 0.1, 0.5, 0.6, 1
+            pos_hint: {"x":.1, "top":1}
+            size_hint: .8, .2
+            font_size: 60
+
+        Button:
+            text: "- Click Here to Play BlackJack -"
+            font_size: 40
+            on_press: 
+                app.root.current = "blackjackscreen"
+                root.manager.transition.direction = "up"
+            pos_hint: {"x":.25, "top":.4}
+            background_color: 0.1, 0.5, 0.6, 1
+            size_hint: .5, 0.05
+        
+        Button:
+            text: "- Click Here to Play War -"
+            font_size: 40
+            on_press: 
+                app.root.current = "warscreen"
+                root.manager.transition.direction = "up"
+            pos_hint: {"x":.25, "top":.3}
+            background_color: 0.1, 0.5, 0.6, 1
+            size_hint: .5, 0.05
+
+<BlackJackScreen>:
+    name: "blackjackscreen"
+
+    FloatLayout: 
+        size: root.width, root.height
+        
+        canvas:
+            Color: 
+                rgba: 1, 1, 1, .8
+            Rectangle:
+                source: 'michal-parzuchowski-oT-XbATcoTQ-unsplash.jpg'
+                pos: self.pos
+                size: self.size
+
+        Button:
+            id: topbutton
+            text: "-- BlackJack (21) --"
+            background_color: 0.1, 0.5, 0.6, 1
+            pos_hint: {"x":.1, "top":1}
+            size_hint: .8, .2
+            font_size: 60
+
+        Button:
+            id: firstbutton
+            size: self.texture_size
+            text:"- Click here for New Deck -"
+            pos_hint: {"x":.25, "top":.4}
+            background_color: 0.1, 0.5, 0.6, 1
+            size_hint: .5, 0.05
+            font_size: 40
+            on_press: 
+
+        Label:
+            id: results
+            font_size: 40
+            text: ''
+            pos_hint: {"x":.25, "top":0}
+            size_hint: .5, 0.05
+            background_color: 0.1, 0.5, 0.6, 1
+
+        Button:
+            id: backbutton
+            size: self.texture_size
+            text:"Click here to Return to Welcome Screen"
+            pos_hint: {"x": .25, "top": .12}
+            background_color: 0.1, 0.5, 0.6, 1
+            size_hint: .5, 0.05
+            font_size: 40
+            on_press: 
+                app.root.current = "openscreen"
+                root.manager.transition.direction = "down"
+
+<WarScreen>:
+    name: "warscreen"
+
+    FloatLayout: 
+        size: root.width, root.height
+        
+        playeronecard: 
+        playertwocard:
+        deck: []
+
+        canvas:
+            Color: 
+                rgba: 1, 1, 1, .8
+            Rectangle:
+                source: 'michal-parzuchowski-oT-XbATcoTQ-unsplash.jpg'
+                pos: self.pos
+                size: self.size
+
+        Button:
+            id: topbutton
+            text: "-- War (high card wins) --"
+            background_color: 0.1, 0.5, 0.6, 1
+            pos_hint: {"x":.1, "top":1}
+            size_hint: .8, .2
+            font_size: 60
+
+        Image:
+            id: player1card
+            source: '3 of hearts.png'
+            pos_hint: {"x":.1, "y":.4}
+            size_hint: .27, .35
+            font_size: 20
+
+        Image:
+            id: player2card
+            source: 'king of spades.png'
+            pos_hint: {"x":.6, "y":.4}
+            size_hint: .27, .35
+            font_size: 20
+
+        Button:
+            id: player1score
+            text: '0'
+            pos_hint: {"x":.075, "y":.4}
+            size_hint: .07, .07
+            font_size: 35
+
+        Button:
+            id: player2score
+            text: '0'
+            pos_hint: {"x":.827, "y":.4}
+            size_hint: .07, .07
+            font_size: 35
+
+        Button:
+            id: firstbutton
+            size: self.texture_size
+            text:"- Click to Deal -"
+            pos_hint: {"x":.35, "top":.4}
+            background_color: 0.1, 0.5, 0.6, 1
+            size_hint: .25, 0.2
+            font_size: 40
+            on_press: root.warplay()
+
+        Button:
+            id: firstbutton
+            size: self.texture_size
+            text:"- Click for New Deck -"
+            pos_hint: {"x":.05, "top":.22}
+            background_color: 0.1, 0.5, 0.6, 1
+            size_hint: .25, 0.2
+            font_size: 40
+            on_press: root.newdeck()
+
+        Button:
+            id: backbutton
+            size: self.texture_size
+            text:"Click here to Return to Welcome Screen"
+            pos_hint: {"x": .45, "top": .12}
+            background_color: 0.1, 0.5, 0.6, 1
+            size_hint: .5, 0.05
+            font_size: 40
+            on_press: 
+                app.root.current = "openscreen"
+                root.manager.transition.direction = "down"
+
+
+<WarPopup>:
+    name: "warpopupwindow"
+
+    BoxLayout:
+        orientation: 'vertical'
+        BoxLayout:
+            orientation: 'horizontal'
+            Image:
+                id: gamewinner
+                source: 'tied.png'
+        BoxLayout:
+            orientation: 'horizontal'
+            Button:
+                id: popbuttonagain
+                text: 'play again'
+            Button:
+                id: popbuttonback
+                text: 'go back'
+            
+
+# Eucalyptus rgba: .27, .96, .65, .75
